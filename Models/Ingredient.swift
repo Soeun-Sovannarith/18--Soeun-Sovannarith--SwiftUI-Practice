@@ -1,6 +1,6 @@
 import Foundation
 
-struct Ingredient: Identifiable {
+struct Ingredient: Identifiable, Hashable {
     let id: UUID
     let baseAmount: Double
     let unit: String
@@ -13,6 +13,7 @@ struct Ingredient: Identifiable {
         self.name = name
     }
 
+    /// Scales the base amount to the chosen servings without changing the original recipe data.
     func displayAmount(servings: Int, baseServings: Int) -> String {
         let scaled = baseAmount * Double(servings) / Double(baseServings)
         let rounded = scaled.rounded()

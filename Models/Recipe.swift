@@ -1,14 +1,13 @@
-import SwiftUI
+import Foundation
 
-struct Recipe: Identifiable {
+struct Recipe: Identifiable, Hashable {
     let id: UUID
     let name: String
     let category: String
     let cookingTimeMinutes: Int
     let baseServings: Int
     let description: String
-    let emoji: String
-    let accentColor: Color
+    let imageName: String
     let ingredients: [Ingredient]
     let steps: [MethodStep]
 
@@ -19,8 +18,7 @@ struct Recipe: Identifiable {
         cookingTimeMinutes: Int,
         baseServings: Int,
         description: String,
-        emoji: String,
-        accentColor: Color,
+        imageName: String,
         ingredients: [Ingredient],
         steps: [MethodStep]
     ) {
@@ -30,8 +28,7 @@ struct Recipe: Identifiable {
         self.cookingTimeMinutes = cookingTimeMinutes
         self.baseServings = baseServings
         self.description = description
-        self.emoji = emoji
-        self.accentColor = accentColor
+        self.imageName = imageName
         self.ingredients = ingredients
         self.steps = steps
     }

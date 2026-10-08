@@ -8,17 +8,17 @@ struct IngredientRow: View {
     var body: some View {
         HStack(spacing: 12) {
             Text(ingredient.displayAmount(servings: servings, baseServings: baseServings))
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.orange)
-                .frame(width: 64, alignment: .leading)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Color.appAccent)
+                .frame(width: 74, alignment: .leading)
 
             Text(ingredient.name)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
+                .font(.system(size: 16))
+                .foregroundStyle(Color.appInk)
 
             Spacer()
         }
-        .padding(.vertical, 10)
-        .padding(.horizontal, 12)
+        .padding(.vertical, 11)
+        .padding(.horizontal, 16)
     }
 }

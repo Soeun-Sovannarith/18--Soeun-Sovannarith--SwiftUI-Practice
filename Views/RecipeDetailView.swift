@@ -12,76 +12,75 @@ struct RecipeDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
                 heroSection
 
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 18) {
                     infoSection
                     servingSection
                     ingredientSection
                     methodSection
                 }
-                .padding(16)
-                .padding(.bottom, 24)
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+                .padding(.bottom, 32)
+                .background(Color.appBackground)
+                .clipShape(RoundedRectangle(cornerRadius: 28))
+                .padding(.top, -28)
             }
         }
+        .background(Color.appBackground)
         .ignoresSafeArea(edges: .top)
         .toolbar(.hidden, for: .navigationBar)
         .overlay(alignment: .topLeading) {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.body.bold())
-                    .foregroundStyle(.white)
-                    .frame(width: 36, height: 36)
-                    .background(.black.opacity(0.35))
-                    .clipShape(Circle())
-            }
-            .padding(.top, 54)
-            .padding(.leading, 16)
+            backButton
         }
     }
 
     private var heroSection: some View {
-        ZStack {
-            LinearGradient(
-                colors: [
-                    recipe.accentColor.opacity(0.5),
-                    recipe.accentColor.opacity(0.9)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            Text(recipe.emoji)
-                .font(.system(size: 110))
+        Image(recipe.imageName)
+            .resizable()
+            .scaledToFill()
+            .frame(height: 330)
+            .frame(maxWidth: .infinity)
+            .clipped()
+    }
+
+    private var backButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "chevron.left")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(Color.appInk)
+                .frame(width: 44, height: 44)
+                .background(.ultraThinMaterial)
+                .clipShape(Circle())
         }
-        .frame(height: 280)
+        .padding(.leading, 16)
+        .padding(.top, 4)
+        .accessibilityLabel("Back")
     }
 
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 10) {
-                Text(recipe.category)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(recipe.accentColor)
+                Text(recipe.category.uppercased())
+                    .kerning(0.5)
+                    .foregroundStyle(Color.appAccent)
 
-                HStack(spacing: 4) {
-                    Image(systemName: "clock")
-                        .font(.caption)
-                    Text("\(recipe.cookingTimeMinutes) min")
-                        .font(.caption)
-                }
-                .foregroundStyle(.secondary)
+                Label("\(recipe.cookingTimeMinutes) min", systemImage: "clock")
+                    .foregroundStyle(Color.appSecondary)
             }
+            .font(.system(size: 13, weight: .semibold))
 
             Text(recipe.name)
-                .font(.title.bold())
-                .foregroundStyle(.primary)
+                .font(.serifTitle(32))
+                .foregroundStyle(Color.appInk)
 
             Text(recipe.description)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.system(size: 15))
+                .foregroundStyle(Color.appSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -91,8 +90,9 @@ struct RecipeDetailView: View {
             ServingControl(servings: $servings)
 
             Text("Recipe serves \(recipe.baseServings) · amounts scaled ×\(scalingLabel)")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.system(size: 12))
+                .foregroundStyle(Color.appSecondary)
+                .padding(.horizontal, 4)
         }
     }
 
@@ -107,41 +107,39 @@ struct RecipeDetailView: View {
 
     private var ingredientSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text("Ingredients")
-                    .font(.headline)
+                    .font(.system(size: 20, weight: .semibold))
                 Spacer()
                 Text("\(recipe.ingredients.count) items")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 13))
+                    .foregroundStyle(Color.appSecondary)
             }
+            .padding(.horizontal, 4)
 
             VStack(spacing: 0) {
-                ForEach(Array(recipe.ingredients.enumerated()), id: \.element.id) { index, ingredient in
+                ForEach(recipe.ingredients) { ingredient in
                     IngredientRow(
                         ingredient: ingredient,
                         servings: servings,
                         baseServings: recipe.baseServings
                     )
-                    if index < recipe.ingredients.count - 1 {
+                    if ingredient.id != recipe.ingredients.last?.id {
                         Divider()
-                            .padding(.horizontal, 12)
+                            .overlay(Color.appSeparator)
                     }
                 }
             }
-            .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color(.systemGray5), lineWidth: 1)
-            )
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 18))
         }
     }
 
     private var methodSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Method")
-                .font(.headline)
+                .font(.system(size: 20, weight: .semibold))
+                .padding(.horizontal, 4)
 
             ForEach(recipe.steps) { step in
                 MethodStepCard(step: step)

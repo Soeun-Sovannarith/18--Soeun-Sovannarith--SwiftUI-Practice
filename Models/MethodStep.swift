@@ -1,6 +1,6 @@
 import Foundation
 
-struct MethodStep: Identifiable {
+struct MethodStep: Identifiable, Hashable {
     let id: UUID
     let stepNumber: Int
     let description: String

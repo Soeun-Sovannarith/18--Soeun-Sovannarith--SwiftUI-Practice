@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Homework_Recipe",
+    name: "Cambo_Recipe",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "Homework_Recipe",
+            name: "Cambo_Recipe",
             targets: ["AppModule"],
             bundleIdentifier: "testing.Homework-Recipe",
             teamIdentifier: "RN35UX94ZV",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .gift),
+            appIcon: .placeholder(icon: .bowl),
             accentColor: .presetColor(.purple),
             supportedDeviceFamilies: [
                 .pad,
@@ -40,5 +40,5 @@ let package = Package(
             path: "."
         )
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageVersions: [.version("6")]
 )

@@ -1,51 +1,52 @@
 import SwiftUI
 
 struct ServingControl: View {
+    /// Owned by RecipeDetailView; this child reads and changes it through the binding.
     @Binding var servings: Int
 
     var body: some View {
         HStack {
             Text("Servings")
-                .font(.subheadline)
-                .foregroundStyle(.primary)
+                .font(.system(size: 17))
+                .foregroundStyle(Color.appInk)
 
             Spacer()
 
-            HStack(spacing: 16) {
+            HStack(spacing: 12) {
                 Button {
                     if servings > 1 { servings -= 1 }
                 } label: {
-                    Image(systemName: "minus")
-                        .font(.caption.bold())
-                        .frame(width: 28, height: 28)
-                        .background(Color(.systemGray5))
-                        .clipShape(Circle())
+                    stepIcon("minus")
                 }
-                .buttonStyle(.plain)
                 .disabled(servings <= 1)
+                .accessibilityLabel("Fewer servings")
 
                 Text("\(servings)")
-                    .font(.subheadline.weight(.medium))
-                    .frame(minWidth: 20)
+                    .font(.system(size: 17, weight: .semibold))
+                    .frame(minWidth: 22)
 
                 Button {
                     servings += 1
                 } label: {
-                    Image(systemName: "plus")
-                        .font(.caption.bold())
-                        .frame(width: 28, height: 28)
-                        .background(Color(.systemGray5))
-                        .clipShape(Circle())
+                    stepIcon("plus")
                 }
-                .buttonStyle(.plain)
+                .accessibilityLabel("More servings")
             }
+            .buttonStyle(.plain)
         }
-        .padding(12)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color(.systemGray4), lineWidth: 1)
-        )
+        .padding(.vertical, 10)
+        .padding(.leading, 16)
+        .padding(.trailing, 12)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func stepIcon(_ systemName: String) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: 14, weight: .bold))
+            .foregroundStyle(Color.appInk)
+            .frame(width: 32, height: 32)
+            .background(Color.appFill)
+            .clipShape(Circle())
     }
 }
